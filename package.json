@@ -1,0 +1,40 @@
+{
+  "name": "api-design",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist/ && tsc",
+    "ci": "pnpm run build",
+    "compose": "docker compose down && docker compose up -d",
+    "test": "vitest run",
+    "test:upload": "vitest run ingest",
+    "test:env": "vitest run env",
+    "test:watch": "vitest",
+    "indent:check": "prettier . --check",
+    "indent:write": "prettier . --write",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.1.6",
+    "@eslint/eslintrc": "^3.1.0",
+    "@types/eslint": "^9.6.0",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@typescript-eslint/parser": "^8.11.0",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.12.0",
+    "prettier": "^3.3.3",
+    "@types/node": "^22.9.3",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.15.0",
+    "vitest": "^2.1.5"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}

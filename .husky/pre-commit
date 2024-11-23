@@ -1,0 +1,3 @@
+pnpm run indent:check
+pnpm run ci
+pnpm test
