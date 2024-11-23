@@ -8,9 +8,9 @@ describe("file-ingestion", () => {
   afterAll(() => {});
 
   it("env postgres", async () => {
-    const POSTGRES_USER = "trigon";
+    const POSTGRES_USER = "api";
     const POSTGRES_PASSWORD = "password";
-    const POSTGRES_DB = "trigon";
+    const POSTGRES_DB = "design";
     const POSTGRES_HOST = "localhost";
     const POSTGRES_PORT = "5431";
     const userP = process.env.POSTGRES_USER;
