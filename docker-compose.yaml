@@ -1,11 +1,11 @@
 services:
   ## Database
   db:
-    container_name: postgres
+    container_name: api-db
     image: postgres
     restart: always
     ports:
-      - 5431:5432
+      - 5430:5432
     volumes:
       - ./postgres-storage:/var/lib/postgresql/data
-    env_file: .env
+    env_file: .env.local
