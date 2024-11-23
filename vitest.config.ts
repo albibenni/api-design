@@ -12,7 +12,7 @@ export default defineConfig({
       maxWorkers: 1,
     },
     env: {
-      ...config({ path: "./.env" }).parsed,
+      ...config({ path: "./.env.local" }).parsed,
     },
     root: "./src",
     onConsoleLog(log: string, type: "stdout" | "stderr"): false | void {
