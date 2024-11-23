@@ -9,7 +9,6 @@
     "ci": "pnpm run build",
     "compose": "docker compose down && docker compose up -d",
     "test": "vitest run",
-    "test:upload": "vitest run ingest",
     "test:env": "vitest run env",
     "test:watch": "vitest",
     "indent:check": "prettier . --check",

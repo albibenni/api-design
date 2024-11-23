@@ -12,9 +12,9 @@ export default defineConfig({
       maxWorkers: 1,
     },
     env: {
-      ...config({ path: "./.env.local" }).parsed,
+      ...config({ path: "./.env" }).parsed,
     },
-    root: "./packages",
+    root: "./src",
     onConsoleLog(log: string, type: "stdout" | "stderr"): false | void {
       console.log("log in test: ", log);
       if (log === "message from third party library" && type === "stdout") {
