@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESnext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "lib": ["ESNext"],
     "module": "NodeNext" /* Specify what module code is generated. */,
     "moduleResolution": "NodeNext",
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,

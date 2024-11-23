@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "dev": "dotenv -e .env.local bun ./src/index.ts",
     "build": "rm -rf dist/ && tsc",
     "ci": "pnpm run build",
     "compose": "docker compose down && docker compose up -d",
@@ -31,12 +32,15 @@
     "globals": "^15.12.0",
     "husky": "^9.1.6",
     "prettier": "^3.3.3",
+    "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.15.0",
     "vitest": "^2.1.5"
   },
   "dependencies": {
-    "express": "^4.21.1",
-    "ts-node": "^10.9.2"
+    "@prisma/client": "^5.22.0",
+    "dotenv-cli": "^7.4.4",
+    "express": "^4.21.1"
   }
 }
