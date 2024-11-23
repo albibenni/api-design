@@ -12,3 +12,20 @@ Check port first, then run:
   - `docker exec -it container-name -U user-name -d db-name`
     According to the current `.env.local`:
     - `docker exec -it api-db psql -U api -d design`
+
+### Prisma init
+
+Init:
+
+- `pnpm exec prisma init`
+
+Migration:
+
+- Install the client:
+
+  - `pnpm i @prisma/client`
+
+- Create the first migration
+  - `pnpm exec prisma migrate dev`
+    - then you enter the name - eg. `init` for the first one
+    - if anything goes wrong use `pnpm exec prisma migrate --reset`

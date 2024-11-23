@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "dotenv -e .env.local bun ./src/index.ts",
+    "migration": "dotenv -e .env.local prisma migrate dev",
     "build": "rm -rf dist/ && tsc",
     "ci": "pnpm run build",
     "compose": "docker compose down && docker compose up -d",
