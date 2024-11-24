@@ -29,3 +29,8 @@ Migration:
   - `pnpm exec prisma migrate dev`
     - then you enter the name - eg. `init` for the first one
     - if anything goes wrong use `pnpm exec prisma migrate --reset`
+
+#### Verify Prisma Schema and Data
+
+- Run:
+  - `pnpm exec prisma studio`
