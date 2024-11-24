@@ -22,9 +22,11 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
+    "@types/cors": "^2.8.17",
     "@types/eslint": "^9.6.0",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.9.3",
     "@typescript-eslint/parser": "^8.11.0",
     "dotenv": "^16.4.5",
@@ -41,7 +43,9 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "cors": "^2.8.5",
     "dotenv-cli": "^7.4.4",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "morgan": "^1.10.0"
   }
 }
