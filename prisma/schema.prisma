@@ -34,9 +34,9 @@ model User {
   createdAt DateTime  @default(now())
   username  String    @unique
   password  String
-  Post      Post[]
-  Product   Product[]
-  Update    Update[]
+  posts     Post[]
+  products  Product[]
+  updates   Update[]
 }
 
 model Product {
