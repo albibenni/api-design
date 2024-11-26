@@ -28,7 +28,8 @@ Migration:
 - Create the first migration
   - `pnpm exec prisma migrate dev`
     - then you enter the name - eg. `init` for the first one
-    - if anything goes wrong use `pnpm exec prisma migrate --reset`
+    - if anything goes wrong use `pnpm exec prisma migrate reset`
+    - don't forget the port - aka the .env file used
 
 #### Verify Prisma Schema and Data
 
