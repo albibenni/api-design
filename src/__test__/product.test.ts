@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import prisma from "../db.js";
 import {
   createProduct,
@@ -9,21 +9,26 @@ import {
 } from "../handlers/product.js";
 import { Product } from "@prisma/client";
 
-vi.mock("../db", () => ({
-  default: {
-    user: {
-      findUnique: vi.fn(),
-    },
-    product: {
-      findFirst: vi.fn(),
-      create: vi.fn(),
-      update: vi.fn(),
-      delete: vi.fn(),
-    },
-  },
-}));
-
 describe("getProducts", () => {
+  beforeEach(() => {
+    vi.mock("../db", () => ({
+      default: {
+        user: {
+          findUnique: vi.fn(),
+        },
+        product: {
+          findFirst: vi.fn(),
+          create: vi.fn(),
+          update: vi.fn(),
+          delete: vi.fn(),
+        },
+      },
+    }));
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
   it("should return the user's products if the user is found", async () => {
     const req = { user: { id: 1 } };
     const res = {
