@@ -2,6 +2,7 @@ import { describe, beforeEach, it, afterEach, expect, vi } from "vitest";
 import prisma from "../db.js";
 import {
   createUpdate,
+  deleteUpdate,
   getOneUpdate,
   getUpdates,
   updateUpdate,
@@ -13,6 +14,7 @@ vi.mock("../db.js", () => ({
       findUnique: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
+      delete: vi.fn(),
     },
     product: {
       findMany: vi.fn(),
@@ -349,5 +351,103 @@ describe("updateUpdate", () => {
     await expect(updateUpdate(mockReq, mockRes)).rejects.toThrow(
       "Database error",
     );
+  });
+});
+describe("deleteUpdate", () => {
+  let mockReq: any;
+  let mockRes: any;
+
+  beforeEach(() => {
+    mockReq = {
+      params: {
+        id: "update-1",
+      },
+      user: {
+        id: "user-123",
+      }
+    };
+    mockRes = {
+      json: vi.fn(),
+    };
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should delete an existing update when user has access", async () => {
+    const mockProducts = [
+      {
+        id: "prod-1", 
+        updates: [{ id: "update-1", title: "Update to Delete" }]
+      }
+    ];
+
+    const mockDeletedUpdate = {
+      id: "update-1",
+      title: "Update to Delete"
+    };
+
+    (prisma.product.findMany as any).mockResolvedValue(mockProducts);
+    (prisma.update.delete as any).mockResolvedValue(mockDeletedUpdate);
+
+    await deleteUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findMany).toHaveBeenCalledWith({
+      where: {
+        belongsToId: "user-123"
+      },
+      include: {
+        updates: true
+      }
+    });
+
+    expect(prisma.update.delete).toHaveBeenCalledWith({
+      where: {
+        id: "update-1"
+      }
+    });
+
+    expect(mockRes.json).toHaveBeenCalledWith({
+      data: mockDeletedUpdate
+    });
+  });
+
+  it("should return 'nope' message when update not found", async () => {
+    const mockProducts = [
+      {
+        id: "prod-1",
+        updates: [{ id: "different-update", title: "Different Update" }]
+      }
+    ];
+
+    (prisma.product.findMany as any).mockResolvedValue(mockProducts);
+
+    await deleteUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findMany).toHaveBeenCalled();
+    expect(prisma.update.delete).not.toHaveBeenCalled();
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "nope"
+    });
+  });
+
+  it("should return 'nope' message when user has no products", async () => {
+    (prisma.product.findMany as any).mockResolvedValue([]);
+
+    await deleteUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findMany).toHaveBeenCalled();
+    expect(prisma.update.delete).not.toHaveBeenCalled();
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "nope"
+    });
+  });
+
+  it("should handle database errors", async () => {
+    const error = new Error("Database error");
+    (prisma.product.findMany as any).mockRejectedValue(error);
+
+    await expect(deleteUpdate(mockReq, mockRes)).rejects.toThrow("Database error");
   });
 });
