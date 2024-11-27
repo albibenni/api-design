@@ -364,7 +364,7 @@ describe("deleteUpdate", () => {
       },
       user: {
         id: "user-123",
-      }
+      },
     };
     mockRes = {
       json: vi.fn(),
@@ -378,14 +378,14 @@ describe("deleteUpdate", () => {
   it("should delete an existing update when user has access", async () => {
     const mockProducts = [
       {
-        id: "prod-1", 
-        updates: [{ id: "update-1", title: "Update to Delete" }]
-      }
+        id: "prod-1",
+        updates: [{ id: "update-1", title: "Update to Delete" }],
+      },
     ];
 
     const mockDeletedUpdate = {
       id: "update-1",
-      title: "Update to Delete"
+      title: "Update to Delete",
     };
 
     (prisma.product.findMany as any).mockResolvedValue(mockProducts);
@@ -395,21 +395,21 @@ describe("deleteUpdate", () => {
 
     expect(prisma.product.findMany).toHaveBeenCalledWith({
       where: {
-        belongsToId: "user-123"
+        belongsToId: "user-123",
       },
       include: {
-        updates: true
-      }
+        updates: true,
+      },
     });
 
     expect(prisma.update.delete).toHaveBeenCalledWith({
       where: {
-        id: "update-1"
-      }
+        id: "update-1",
+      },
     });
 
     expect(mockRes.json).toHaveBeenCalledWith({
-      data: mockDeletedUpdate
+      data: mockDeletedUpdate,
     });
   });
 
@@ -417,8 +417,8 @@ describe("deleteUpdate", () => {
     const mockProducts = [
       {
         id: "prod-1",
-        updates: [{ id: "different-update", title: "Different Update" }]
-      }
+        updates: [{ id: "different-update", title: "Different Update" }],
+      },
     ];
 
     (prisma.product.findMany as any).mockResolvedValue(mockProducts);
@@ -428,7 +428,7 @@ describe("deleteUpdate", () => {
     expect(prisma.product.findMany).toHaveBeenCalled();
     expect(prisma.update.delete).not.toHaveBeenCalled();
     expect(mockRes.json).toHaveBeenCalledWith({
-      message: "nope"
+      message: "nope",
     });
   });
 
@@ -440,7 +440,7 @@ describe("deleteUpdate", () => {
     expect(prisma.product.findMany).toHaveBeenCalled();
     expect(prisma.update.delete).not.toHaveBeenCalled();
     expect(mockRes.json).toHaveBeenCalledWith({
-      message: "nope"
+      message: "nope",
     });
   });
 
@@ -448,6 +448,8 @@ describe("deleteUpdate", () => {
     const error = new Error("Database error");
     (prisma.product.findMany as any).mockRejectedValue(error);
 
-    await expect(deleteUpdate(mockReq, mockRes)).rejects.toThrow("Database error");
+    await expect(deleteUpdate(mockReq, mockRes)).rejects.toThrow(
+      "Database error",
+    );
   });
 });
