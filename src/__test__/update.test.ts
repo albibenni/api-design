@@ -194,6 +194,7 @@ describe("createUpdate", () => {
   });
 
   it("should create update when product exists", async () => {
+    const { productId, ...rest } = mockReq.body;
     const mockProduct = {
       id: "test-product-id",
       name: "Test Product",
@@ -214,7 +215,7 @@ describe("createUpdate", () => {
       },
     });
     expect(prisma.update.create).toHaveBeenCalledWith({
-      data: mockReq.body,
+      data: rest,
     });
     expect(mockRes.json).toHaveBeenCalledWith({
       data: mockUpdate,

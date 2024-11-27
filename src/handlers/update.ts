@@ -57,9 +57,10 @@ export const getUpdates = async (req: any, res: any) => {
  * @throws Will throw if database operations fail
  */
 export const createUpdate = async (req: any, res: any) => {
+  const { productId, ...rest } = req.body;
   const product = await prisma.product.findUnique({
     where: {
-      id: req.body.productId,
+      id: productId,
     },
   });
 
@@ -68,7 +69,7 @@ export const createUpdate = async (req: any, res: any) => {
   }
 
   const update = await prisma.update.create({
-    data: req.body,
+    data: rest,
   });
 
   res.json({ data: update });
