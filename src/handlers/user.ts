@@ -10,6 +10,7 @@ export const createNewUser = async (req: Request, res: Response) => {
       password: await hashPassword(req.body.password),
     },
   });
+  await prisma.$disconnect(); // check if this is necessary
 
   const token = createJWT(user);
   res.json({ token });
