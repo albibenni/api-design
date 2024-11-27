@@ -1,14 +1,22 @@
 import { describe, beforeEach, it, afterEach, expect, vi } from "vitest";
 import prisma from "../db.js";
-import { getOneUpdate, getUpdates } from "../handlers/update.js";
+import {
+  createUpdate,
+  getOneUpdate,
+  getUpdates,
+  updateUpdate,
+} from "../handlers/update.js";
 
 vi.mock("../db.js", () => ({
   default: {
     update: {
       findUnique: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
     },
     product: {
       findMany: vi.fn(),
+      findUnique: vi.fn(),
     },
   },
 }));
@@ -158,6 +166,187 @@ describe("getUpdates", () => {
     (prisma.product.findMany as any).mockRejectedValue(error);
 
     await expect(getUpdates(mockReq2, mockRes2)).rejects.toThrow(
+      "Database error",
+    );
+  });
+});
+describe("createUpdate", () => {
+  let mockReq: any;
+  let mockRes: any;
+
+  beforeEach(() => {
+    mockReq = {
+      body: {
+        productId: "test-product-id",
+        title: "Test Update",
+        body: "Test Body",
+      },
+    };
+    mockRes = {
+      json: vi.fn(),
+    };
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should create update when product exists", async () => {
+    const mockProduct = {
+      id: "test-product-id",
+      name: "Test Product",
+    };
+    const mockUpdate = {
+      id: "new-update-id",
+      ...mockReq.body,
+    };
+
+    (prisma.product.findUnique as any).mockResolvedValue(mockProduct);
+    (prisma.update.create as any).mockResolvedValue(mockUpdate);
+
+    await createUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findUnique).toHaveBeenCalledWith({
+      where: {
+        id: "test-product-id",
+      },
+    });
+    expect(prisma.update.create).toHaveBeenCalledWith({
+      data: mockReq.body,
+    });
+    expect(mockRes.json).toHaveBeenCalledWith({
+      data: mockUpdate,
+    });
+  });
+
+  it("should return 'nope' message when product doesn't exist", async () => {
+    (prisma.product.findUnique as any).mockResolvedValue(null);
+
+    await createUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findUnique).toHaveBeenCalledWith({
+      where: {
+        id: "test-product-id",
+      },
+    });
+    expect(prisma.update.create).not.toHaveBeenCalled();
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "nope",
+    });
+  });
+
+  it("should handle database errors", async () => {
+    const error = new Error("Database error");
+    (prisma.product.findUnique as any).mockRejectedValue(error);
+
+    await expect(createUpdate(mockReq, mockRes)).rejects.toThrow(
+      "Database error",
+    );
+  });
+});
+
+describe("updateUpdate", () => {
+  let mockReq: any;
+  let mockRes: any;
+
+  beforeEach(() => {
+    mockReq = {
+      params: {
+        id: "update-1",
+      },
+      user: {
+        id: "user-123",
+      },
+      body: {
+        title: "Updated Title",
+        body: "Updated Body",
+      },
+    };
+    mockRes = {
+      json: vi.fn(),
+    };
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should update an existing update when user has access", async () => {
+    const mockProducts = [
+      {
+        id: "prod-1",
+        updates: [{ id: "update-1", title: "Original Title" }],
+      },
+    ];
+
+    const mockUpdatedUpdate = {
+      id: "update-1",
+      title: "Updated Title",
+      body: "Updated Body",
+    };
+
+    (prisma.product.findMany as any).mockResolvedValue(mockProducts);
+    (prisma.update.update as any).mockResolvedValue(mockUpdatedUpdate);
+
+    await updateUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findMany).toHaveBeenCalledWith({
+      where: {
+        belongsToId: "user-123",
+      },
+      include: {
+        updates: true,
+      },
+    });
+
+    expect(prisma.update.update).toHaveBeenCalledWith({
+      where: {
+        id: "update-1",
+      },
+      data: mockReq.body,
+    });
+
+    expect(mockRes.json).toHaveBeenCalledWith({
+      data: mockUpdatedUpdate,
+    });
+  });
+
+  it("should return 'nope' message when update not found", async () => {
+    const mockProducts = [
+      {
+        id: "prod-1",
+        updates: [{ id: "different-update", title: "Original Title" }],
+      },
+    ];
+
+    (prisma.product.findMany as any).mockResolvedValue(mockProducts);
+
+    await updateUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findMany).toHaveBeenCalled();
+    expect(prisma.update.update).not.toHaveBeenCalled();
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "nope",
+    });
+  });
+
+  it("should return 'nope' message when user has no products", async () => {
+    (prisma.product.findMany as any).mockResolvedValue([]);
+
+    await updateUpdate(mockReq, mockRes);
+
+    expect(prisma.product.findMany).toHaveBeenCalled();
+    expect(prisma.update.update).not.toHaveBeenCalled();
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "nope",
+    });
+  });
+
+  it("should handle database errors", async () => {
+    const error = new Error("Database error");
+    (prisma.product.findMany as any).mockRejectedValue(error);
+
+    await expect(updateUpdate(mockReq, mockRes)).rejects.toThrow(
       "Database error",
     );
   });
