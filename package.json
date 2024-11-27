@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "dotenv -e .env.local bun ./src/index.ts",
+    "dev:loc": "dotenv -e .env.local bun ./src/index.ts",
+    "dev:b": "bun ./src/index.ts",
+    "dev": "node ./dist/src/index.js",
     "migration": "dotenv -e .env.local prisma migrate dev",
     "migration:reset": "dotenv -e .env.local prisma migrate reset",
     "build": "rm -rf dist/ && tsc",
