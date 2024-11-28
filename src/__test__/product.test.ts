@@ -7,7 +7,6 @@ import {
   getProducts,
   updateProduct,
 } from "../handlers/product.js";
-import { Product } from "@prisma/client";
 
 describe("getProducts", () => {
   beforeEach(() => {
@@ -80,7 +79,7 @@ describe("getOneProduct", () => {
     const res = {
       json: vi.fn(),
     };
-    const product: Product = {
+    const product = {
       id: "123",
       belongsToId: "1",
       name: "Test Product",
@@ -132,7 +131,7 @@ describe("createProduct", () => {
     const res = {
       json: vi.fn(),
     };
-    const newProduct: Product = {
+    const newProduct = {
       id: "123",
       name: "New Product",
       belongsToId: "1",
@@ -162,7 +161,7 @@ describe("updateProduct", () => {
     const res = {
       json: vi.fn(),
     };
-    const updatedProduct: Product = {
+    const updatedProduct = {
       id: "123",
       name: "Updated Product",
       belongsToId: "1",
@@ -211,7 +210,7 @@ describe("deleteProduct", () => {
     const res = {
       json: vi.fn(),
     };
-    const deletedProduct: Product = {
+    const deletedProduct = {
       id: "123",
       name: "Product to Delete",
       belongsToId: "1",
