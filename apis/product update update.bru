@@ -1,11 +1,11 @@
 meta {
-  name: post product
+  name: product update update
   type: http
-  seq: 5
+  seq: 2
 }
 
-post {
-  url: http://localhost:3000/api/product
+put {
+  url: http://localhost:3000/api/update/7da1e264-c21b-4e2c-be53-27e269cbd991
   body: json
   auth: bearer
 }
@@ -16,6 +16,6 @@ auth:bearer {
 
 body:json {
   {
-    "name": "test"
+    "title": "new feat up"
   }
 }

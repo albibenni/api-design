@@ -106,7 +106,7 @@ export const updateUpdate = async (req: any, res: any) => {
     return [...allUpdates, ...product.updates];
   }, [] as any[]);
 
-  const match = updates.find((update) => update.id === req.params.id);
+  const match = updates.find((update) => update.id == req.params.id);
 
   if (!match) {
     return res.json({ message: "nope" });
