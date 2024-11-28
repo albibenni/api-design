@@ -59,10 +59,9 @@ import { Request, Response } from "express";
  * @throws Will throw if database operations fail
  */
 export const createUpdate = async (req: any, res: any) => {
-  const { productId, ...rest } = req.body;
   const product = await prisma.product.findUnique({
     where: {
-      id: productId,
+      id: req.body.productId,
     },
   });
 
@@ -71,7 +70,12 @@ export const createUpdate = async (req: any, res: any) => {
   }
 
   const update = await prisma.update.create({
-    data: rest,
+    // @ts-ignore
+    data: {
+      title: req.body.title,
+      body: req.body.body,
+      product: { connect: { id: product.id } },
+    },
   });
 
   res.json({ data: update });

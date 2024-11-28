@@ -6,6 +6,16 @@ meta {
 
 post {
   url: http://localhost:3000/api/product
-  body: none
-  auth: none
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjljN2YwMjEyLTc0ZTMtNDYyZS1iZDBmLWU2ZDczNjYwMTZiZSIsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTczMjczNDI5NX0.YwJK5UqcJmyFnjzERNrPOT_3aBzHVFN5sGk8YCae0NE
+}
+
+body:json {
+  {
+    "name": "test"
+  }
 }

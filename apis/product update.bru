@@ -1,15 +1,23 @@
 meta {
-  name: get products
+  name: product update
   type: http
-  seq: 5
+  seq: 1
 }
 
-get {
-  url: http://localhost:3000/api/product
-  body: none
+post {
+  url: http://localhost:3000/api/update
+  body: json
   auth: bearer
 }
 
 auth:bearer {
   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjljN2YwMjEyLTc0ZTMtNDYyZS1iZDBmLWU2ZDczNjYwMTZiZSIsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTczMjczNDI5NX0.YwJK5UqcJmyFnjzERNrPOT_3aBzHVFN5sGk8YCae0NE
+}
+
+body:json {
+  {
+    "title": "new feat",
+    "body": "best feat",
+    "productId": "9c9f003c-d9ce-45fb-b9af-83fecd18af45"
+  }
 }
