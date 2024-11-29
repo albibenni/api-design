@@ -80,4 +80,18 @@ router.post(
 );
 router.delete("/updatepoint/:id", () => {});
 
+/**
+ * Error handling
+ *
+ * same as server.ts - router level error handling - else wouldn't be caught
+ */
+router.use((err: any, req: any, res: any, next: any) => {
+  if (err.type === "input") {
+    res.status(400).json({ message: "invalid input" });
+  } else if (err.type === "auth") {
+    res.status(401).json({ message: "unauthorized" });
+  } else {
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
 export default router;

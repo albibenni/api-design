@@ -69,15 +69,20 @@ export const getOneProduct = async (req: any, res: any) => {
  *   }
  * }
  */
-export const createProduct = async (req: any, res: any) => {
-  const product = await prisma.product.create({
-    data: {
-      name: req.body.name,
-      belongsToId: req.user.id,
-    },
-  });
+export const createProduct = async (req: any, res: any, next: any) => {
+  try {
+    const product = await prisma.product.create({
+      data: {
+        name: req.body.name,
+        belongsToId: req.user.id,
+      },
+    });
 
-  res.json({ data: product });
+    res.json({ data: product });
+  } catch (error: any) {
+    // 500 so default according to the error type defined in the error handler - server.ts and router.ts
+    next(error);
+  }
 };
 
 /**
