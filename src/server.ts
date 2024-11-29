@@ -30,4 +30,21 @@ app.use("/api", protect, router);
 app.post("/signup", createNewUser);
 app.post("/signin", signin);
 
+/**
+ * Error handling
+ *
+ */
+app.use((err: any, req: any, res: any, next: any) => {
+  if (err.type === "input") {
+    res.status(400);
+    return res.send("invalid input");
+  }
+  if (err.type === "auth") {
+    res.status(401);
+    res.json({ message: "nope" });
+  }
+  console.error(err);
+  res.json({ message: "there was an error" });
+});
+
 export default app;
