@@ -26,7 +26,7 @@ model Post {
   content   String?
   published Boolean  @default(false)
   // relation to another model
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   authorId  String
 }
 
@@ -44,7 +44,7 @@ model Product {
   id          String   @id @default(uuid())
   createdAt   DateTime @default(now())
   name        String   @db.VarChar(255)
-  belongsTo   User     @relation(fields: [belongsToId], references: [id])
+  belongsTo   User     @relation(fields: [belongsToId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   belongsToId String
   updates     Update[]
 
@@ -70,9 +70,9 @@ model Update {
   asset   String?
 
   productId    String
-  product      Product       @relation(fields: [productId], references: [id])
+  product      Product       @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   updatePoints UpdatePoint[]
-  User         User?         @relation(fields: [userId], references: [id])
+  User         User?         @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   userId       String?
 }
 
@@ -85,5 +85,5 @@ model UpdatePoint {
   description String
 
   updateId String
-  update   Update @relation(fields: [updateId], references: [id])
+  update   Update @relation(fields: [updateId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
