@@ -131,6 +131,7 @@ describe("createProduct", () => {
     const res = {
       json: vi.fn(),
     };
+    const next = vi.fn();
     const newProduct = {
       id: "123",
       name: "New Product",
@@ -140,7 +141,7 @@ describe("createProduct", () => {
 
     vi.mocked(prisma.product.create).mockResolvedValue(newProduct);
 
-    await createProduct(req, res);
+    await createProduct(req, res, next);
 
     expect(prisma.product.create).toHaveBeenCalledWith({
       data: {
